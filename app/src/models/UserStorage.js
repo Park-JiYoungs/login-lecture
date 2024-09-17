@@ -1,61 +1,47 @@
 "use strict";
 
-const fs = require("fs").promises;
+const db = require("../config/db.js");
+const sql = require("mssql");
 
 class UserStorage {
 
-    static #getUserInfo(data, id) {
-        const users = JSON.parse(data);
-        const idx = users.id.indexOf(id);
-        const usersKeys = Object.keys(users);
-        const userInfo = usersKeys.reduce((newUser, info) => {
-            newUser[info] = users[info][idx];
-            return newUser;
-        }, {});
-        return userInfo;
-    }
-
-    static #getUsers(data, isAll, fields) {
-        const users = JSON.parse(data);
-        if (isAll) return users;
-        const newUsers = fields.reduce((newUsers, field) => {
-            if (users.hasOwnProperty(field)) {
-                newUsers[field] = users[field];
-            }
-            return newUsers;
-        }, {});
-        return newUsers;
-    }
-
-    static getUsers(isAll, ...fields) {
-        return fs
-            .readFile("./src/databases/users.json")
-            .then((data) => {
-                return this.#getUsers(data, isAll, fields);
-            })
-            .catch(console.error);
-    }
-
     static getUserInfo(id) {
-        return fs
-            .readFile("./src/databases/users.json")
-            .then((data) => {
-                return this.#getUserInfo(data, id);
+        const query = "select * from users where id = @id;";
+        return db
+            .then(pool => {
+                return pool.request()
+                    .input("id",sql.VarChar, id)
+                    .query(query);
             })
-            .catch(console.error);
+            .then(result => {
+                if (result.recordset.length > 0) {
+                    return result.recordset[0];
+                }
+                return null;
+            })
+            .catch(err => {
+                console.error("SQL ERROR", err);
+                throw `${err}`;
+            })
     }
 
     static async save(userInfo) {
-        const users = await this.getUsers(true);
-        if (users.id.includes(userInfo.id)) {
-            throw "이미 존재하는 아이디입니다.";
-        }
-        users.id.push(userInfo.id);
-        users.name.push(userInfo.name);
-        users.psword.push(userInfo.psword); 
-        // 데이터 추가
-        fs.writeFile("./src/databases/users.json", JSON.stringify(users));
-        return { success: true };
+        const query = "insert into users(id, name, psword) values(@id, @name, @psword);";
+        return db
+            .then(pool => {
+                return pool.request()
+                    .input("id",sql.VarChar, userInfo.id)
+                    .input("name",sql.NVarChar, userInfo.name)
+                    .input("psword",sql.NVarChar, userInfo.psword)
+                    .query(query);
+            })
+            .then(result => {
+                return { success: true };
+            })
+            .catch(err => {
+                console.error("SQL ERROR", err);
+                throw `${err}`;
+            })
     }
 }
     
