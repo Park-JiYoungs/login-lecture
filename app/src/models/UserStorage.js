@@ -36,12 +36,32 @@ class UserStorage {
                     .query(query);
             })
             .then(result => {
-                return { success: true };
+                return true;
             })
             .catch(err => {
                 console.error("SQL ERROR", err);
                 throw `${err}`;
             })
+    }
+
+    static async checkId(id) {
+        const query = "select id from users where id = @id";
+        return db
+            .then(pool => {
+                return pool.request()
+                    .input("id",sql.VarChar, id)
+                    .query(query);
+            })
+            .then(result => {
+                if (result.recordset.length > 0) {
+                    return result.recordset[0];
+                }
+                return null;
+            })
+            .catch(err => {
+                console.error("SQL ERROR", err);
+                throw `${err}`;
+            }) 
     }
 }
     

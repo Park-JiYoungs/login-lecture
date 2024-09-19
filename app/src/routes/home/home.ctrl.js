@@ -43,6 +43,18 @@ const process = {
         log(response, url);
         return res.status(url.status).json(response);
     },
+    checkId: async (req, res) => {
+        const user = new User(req.body);
+        const response = await user.checkId();
+
+        const url ={
+            method: "POST",
+            path: "/register",
+            status: response.err? 400 : 200,
+        }
+        log(response, url);
+        return res.status(url.status).json(response);
+    }
 };
 
 module.exports = {

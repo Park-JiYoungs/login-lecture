@@ -44,6 +44,24 @@
 .form #button:hover,.form #button:active,.form #button:focus {
   background: #43A047;
 }
+.form #check-id {
+  font-family: "Roboto", sans-serif;
+  text-transform: uppercase;
+  outline: 0;
+  background: #4CAF50;
+  width: 80%;
+  border: 0;
+  margin: 0 auto;
+  padding: 15px;
+  color: #FFFFFF;
+  font-size: 14px;
+  -webkit-transition: all 0.3 ease;
+  transition: all 0.3 ease;
+  cursor: pointer;
+}
+.form #check-id:hover,.form #check-id:active,.form #check-id:focus {
+  background: #43A047;
+}
 .form .message {
   margin: 15px 0 0;
   color: #b3b3b3;

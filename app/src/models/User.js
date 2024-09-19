@@ -29,12 +29,24 @@ class User {
         const client = this.body;
         try {
             const response = await UserStorage.save(client);
-            return response;
+            return { success: true, msg: "회원가입되었습니다. 로그인 화면으로 돌아갑니다."};
         } catch (err) {
             const a = { success: false, err };
             return a;
         }
         
+    }
+
+    async checkId() {
+        const client = this.body;
+        try {
+            const chkID = await UserStorage.checkId(client.id);
+            
+            if (!chkID) return { success: true, msg: "사용가능한 아이디입니다." };
+            else return { success: false, msg: "사용중인 아이디입니다. "};
+        } catch(err) {
+            return { success: false, err };
+        }
     }
 }
 
