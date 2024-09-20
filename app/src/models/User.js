@@ -10,7 +10,7 @@ class User {
     async login() {
         const client = this.body;
         try {
-            const user = await UserStorage.getUserInfo(client.id); 
+            const user = await UserStorage.getUserInfo(client.id);
     
             if (user) {
                 if (user.id === client.id && user.psword === client.psword) {
@@ -21,9 +21,8 @@ class User {
             return { success: false, msg: "존재하지 않는 아이디입니다." };
         } catch(err) {
             return { success: false, err };
-        }
-        
-    }
+        };
+    };
 
     async register() {
         const client = this.body;
@@ -33,9 +32,8 @@ class User {
         } catch (err) {
             const a = { success: false, err };
             return a;
-        }
-        
-    }
+        };
+    };
 
     async checkId() {
         const client = this.body;
@@ -43,11 +41,11 @@ class User {
             const chkID = await UserStorage.checkId(client.id);
             
             if (!chkID) return { success: true, msg: "사용가능한 아이디입니다." };
-            else return { success: false, msg: "사용중인 아이디입니다. "};
+            else return { success: false, msg: "이미 사용중인 아이디입니다. "};
         } catch(err) {
             return { success: false, err };
-        }
-    }
+        };
+    };
 }
 
 module.exports = User;
