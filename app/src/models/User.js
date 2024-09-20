@@ -28,7 +28,6 @@ class User {
         const client = this.body;
         try {
             const response = await UserStorage.save(client);
-            console.log(response,'6')
             return { success: response.success, msg: response.msg };
         } catch (err) {
             const a = { success: false, err };

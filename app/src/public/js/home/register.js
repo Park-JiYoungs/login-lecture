@@ -17,7 +17,7 @@ function register() {
     if (!id.value) return alert("아이디를 입력해 주세요.");
     if (psword.value !== confirmPsword.value) 
         return alert("비밀번호가 일치하지 않습니다.");
-    // if (id.value !== confirmId.value) return alert("아이디 중복확인을 해주세요.");
+    if (id.value !== confirmId.value) return alert("아이디 중복확인을 해주세요.");
     
 
     const req = {
@@ -62,11 +62,11 @@ function checkId() {
     .then((res) => res.json())
     .then((res) => {
         if (res.err) return alert(res.err);
-        // if (res.success === true) {
-        //     confirmId.value = id.value;
-        // } else {
-        //     confirmId.value = "";
-        // }
+        if (res.success === true) {
+            confirmId.value = id.value;
+        } else {
+            confirmId.value = "";
+        }
         alert(res.msg);
     })
     .catch((err) => {
