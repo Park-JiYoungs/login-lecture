@@ -28,7 +28,8 @@ class User {
         const client = this.body;
         try {
             const response = await UserStorage.save(client);
-            return { success: true, msg: "회원가입되었습니다. 로그인 화면으로 돌아갑니다."};
+            console.log(response,'6')
+            return { success: response.success, msg: response.msg };
         } catch (err) {
             const a = { success: false, err };
             return a;

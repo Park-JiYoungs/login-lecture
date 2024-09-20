@@ -6,10 +6,11 @@ class UserStorage {
 
     static getUserInfo(id) {
         return new Promise((resolve, reject) => {
-            const sql = "select * from users where id = @id;";
+
+            const query = "up_selectUserInfo";
             db.request()
                 .input("id", id)
-                .query(sql, (err, data) => {
+                .execute(sql, (err, data) => {
                     if (err) reject(`${err}`);
                     else resolve(data.recordset[0]);
                 });
@@ -18,14 +19,17 @@ class UserStorage {
 
     static async save(userInfo) {
         return new Promise((resolve, reject) => {
-            const sql = "insert into users(id, name, psword) values(@id, @name, @psword);";
-            db.request()
+            const query = "up_insertUserInfo";
+            const sql = db.request()
                 .input("id", userInfo.id)
                 .input("name", userInfo.name)
                 .input("psword", userInfo.psword)
-                .query(sql, (err) => {
+                .execute(query, (err, data) => {
                     if (err) reject (`${err}`);
-                    else resolve({ success: true });
+                    else {
+                        data = data.recordset[0];
+                        resolve({ success: data.success, msg: data.msg });
+                    }
                 });
         });
     };
