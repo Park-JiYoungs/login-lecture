@@ -28,15 +28,4 @@
 </body>
 </html>
 
-<script>
-  document.getElementById("id").addEventListener('input', (e) => {
-    const idChk= document.getElementById("id");
-    let idExpress = /^[a-zA-Z0-9]{0,30}$/; //영문,숫자 조합 0~30자 입력할 수 있도록 정규식
-
-    if (!idExpress.test(idChk.value)) {
-        idChk.value = idChk.value.slice(0,30).replace(/[^a-zA-Z0-9]/g, ''); // 영문자와 숫자 외의 문자 제거
-    }
-  });
-</script>
-
 <!-- Copyright (c) 2024 by Aigars Silkalns (https://codepen.io/colorlib/pen/rxddKy) -->

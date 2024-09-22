@@ -1,5 +1,9 @@
 "use strict";
 
+document.getElementById("id").addEventListener('input', (e) => {
+    e.target.value = e.target.value.slice(0,30).replace(/[^a-zA-Z0-9]/g, ''); //영문,숫자 조합 0~30자 입력할 수 있도록 정규식
+});
+
 const id = document.querySelector("#id"),
     confirmId = document.querySelector("#confirm-id"),
     name = document.querySelector("#name"),
@@ -44,7 +48,7 @@ function register() {
         }
     })
     .catch((err) => {
-        console.error(("로그인 중 에러 발생"));
+        console.error(("회원가입 중 에러 발생"));
     });
 }
 
